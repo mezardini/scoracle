@@ -1,0 +1,8 @@
+numpy
+bs4
+requests
+pandas
+csv
+scipy
+math
+heapq
