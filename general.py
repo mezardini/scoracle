@@ -91,8 +91,41 @@ class GoalPrediction:
         # if len(b_tags) >= 755:
         #     b_tags[752].text
         #     b_tags[754].text
-        H3a = self.Homeavg 
-        A3a = self.Awayavg
+        # get home average for league
+        table = soup.find("table", style="margin-left:14px;margin-riht:14px;border:1px solid #aaaaaa;border-radius:12px;overflow:hidden;")
+
+        if table:
+            # Find all <b> tags within the table
+            b_tags = table.find_all("b")
+
+            # Check if the 9th <b> tag exists
+            if len(b_tags) >= 9:
+                # Get the text from the 9th <b> tag
+                ninth_b_text = b_tags[8].text
+                print("Text of the 9th <b> tag within the table:", ninth_b_text)
+           
+        Home_avg = float(100.000)
+        if table:
+                # Find all <b> tags within the table
+                b_tags = table.find_all("b")
+
+                # Check if the 9th <b> tag exists
+                if len(b_tags) >= 9:
+                    # Get the text from the 9th <b> tag
+                    Home_avg = b_tags[8].text
+                    
+        # get away average for league
+        Away_avg = float(100.000)
+        if table:
+                # Find all <b> tags within the table
+                b_tags = table.find_all("b")
+
+                # Check if the 9th <b> tag exists
+                if len(b_tags) >= 11:
+                    # Get the text from the 9th <b> tag
+                    Away_avg = b_tags[10].text
+        H3a = Home_avg
+        A3a = Away_avg
         H3 = float(H3a)
         A3 = float(A3a)   
 
@@ -126,6 +159,8 @@ class GoalPrediction:
                 A1 = ("{:0.2f}".format(float(row_list[2])/A3)) 
                 A2 = ("{:0.2f}".format(float(row_listaway[5])/A3)) 
                 Away_goal = ("{:0.2f}".format(float(A1) * float(A2) * float(A3)))
+                twomatch_goals_probability = ("{:0.2f}".format((1-poisson.cdf(k=2, mu=float(float(Home_goal) + float(Away_goal))))*100))
+                threematch_goals_probability = ("{:0.2f}".format((1-poisson.cdf(k=3, mu=float(float(Home_goal) + float(Away_goal))))*100))
 
                 lambda_home = float(Home_goal)
                 lambda_away = float(Away_goal)
@@ -142,6 +177,8 @@ class GoalPrediction:
                 print(f"{H3} - {A3}")
                 print(f"{Home_goal} - {Away_goal}")
                 print(f"{first_item} {most_likely_outcome[0]}  vs  {most_likely_outcome[1]} {second_item} prob- {most_likely_prob_percent:.1f}%")
+                print(f"Over 2.5 prob: - {threematch_goals_probability}%")
+                print(f"Over 1.5 prob: - {twomatch_goals_probability}%")
             # print(f"The most probable scoreline is Home {most_likely_outcome[0]} - {most_likely_outcome[1]} Away with probability {most_likely_prob_percent:.1f}%")
             max_goals = 3  # maximum number of goals to consider
             top_n = 5  # number of top scorelines to print
@@ -175,12 +212,12 @@ class GoalPrediction:
 
 # createAvgGoalFile()
 # getFixtureList()
-namex = 'germany2'
+namex = 'belgium'
 file_name = namex+'.csv'
 urlavgtable = 'https://www.soccerstats.com/table.asp?league='+namex+'&tid=d'
 urlfixture = 'https://www.soccerstats.com/latest.asp?league='+namex
-home_avg = 1.64
-away_avg = 1.30
+home_avg = 1.49
+away_avg = 1.24
 predict = GoalPrediction(file_name, urlavgtable, urlfixture, home_avg, away_avg)
 predict.createAvgGoalFile()
 predict.getFixtureList()
