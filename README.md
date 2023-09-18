@@ -14,7 +14,7 @@ To run Scoracle locally, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/mezardini/scoracle.git`
 2. Install the required dependencies: `pip install -r requirements.txt`
-3. Input the league and the average goal scored home and away in the league
+3. Input the league you want to predict. For the premier league, input 'england', for the Bundesliga 2, input 'germany2'
 4. Run 'python general.py >> predictions.txt"
 
 
@@ -29,6 +29,3 @@ We welcome contributions to Scoracle! If you would like to contribute, please fo
 4. Push your changes to your forked repository.
 5. Submit a pull request to the main repository.
 
-## License
-
-Scoracle is released under the [MIT License](LICENSE).
